@@ -1,0 +1,15 @@
+//  Copyright 2020
+//  Jakob Sailer aka KingPommes
+//  DO NOT copy or edit
+
+"LightmappedGeneric" {
+	$basetexture kingpommes/startrek/intrepid/eng_corrigated_trim
+	$bumpmap kingpommes/startrek/intrepid/eng_corrigated_trim_normal
+	
+	$normalmapalphaenvmapmask 1
+	
+	$envmap env_cubemap
+	$envmaptint "[.05 .05 .05]"
+	
+	$surfaceprop metal
+}

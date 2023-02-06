@@ -1,0 +1,14 @@
+//  Copyright 2020
+//  Jakob Sailer aka KingPommes
+//  DO NOT copy or edit
+
+patch // type b
+{
+	// type c
+	include materials\kingpommes\startrek\intrepid\carpet_white.vmt
+	replace
+	{
+		// type d
+		"$detail" "kingpommes/startrek/intrepid/carpet_blue"
+	}
+}

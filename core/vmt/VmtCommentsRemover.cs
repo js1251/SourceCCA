@@ -2,10 +2,10 @@
 
 namespace core.vmt;
 
-public class VmtComments {
+public class VmtCommentsRemover {
     private readonly Vmt _vmt;
 
-    public VmtComments(Vmt vmt) {
+    public VmtCommentsRemover(Vmt vmt) {
         _vmt = vmt;
     }
 
@@ -51,19 +51,5 @@ public class VmtComments {
         // Note: with current version of Gameloop.Vdf,
         // leading comments are always removed by the parser
         return;
-    }
-
-    public void AddComment(string comment) {
-        if (_vmt.Vdf.Value is not VObject vObject) {
-            return;
-        }
-
-        vObject.Add(VValue.CreateComment(comment));
-    }
-
-    public void AddComment(IEnumerable<string> comments) {
-        foreach (var comment in comments) {
-            AddComment(comment);
-        }
     }
 }

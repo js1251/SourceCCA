@@ -29,6 +29,9 @@
     <None Update="Resources\vmts\example3.vmt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\vmts\example5.vmt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\vmts\example4.vmt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

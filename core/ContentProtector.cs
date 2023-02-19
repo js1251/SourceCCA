@@ -4,7 +4,8 @@ using core.vtf;
 namespace core;
 
 public class ContentProtector {
-    public bool RemoveExistingComments { get; init; } = true;
+    public bool RemoveExistingComments { get; init; }
+    public bool AddNoToolTexture { get; init; }
 
     public string[] Comment {
         get => _comment;
@@ -16,23 +17,27 @@ public class ContentProtector {
     }
 
     private readonly string[] _comment;
+    private readonly DirectoryInfo _rootDirInfo;
 
     private readonly string[] _watermark = {
-        "===============================",
-        "= Comments added by SourceCCA =",
-        "=   Created by Jakob Sailer   =",
-        "=    Visit jakobsailer.com    =",
-        "==============================="
+        "================================",
+        "= Watermark added by SourceCCA =",
+        "=   Created by Jakob Sailer    =",
+        "=    Visit jakobsailer.com     =",
+        "================================"
     };
 
     public ContentProtector(DirectoryInfo dirInfo) {
+        _rootDirInfo = dirInfo;
         _comment = Array.Empty<string>();
 
         if (!Directory.Exists(dirInfo.FullName)) {
             throw new ArgumentException("Directory does not exist", nameof(dirInfo));
         }
+    }
 
-        var files = GetFiles(dirInfo);
+    public void Protect() {
+        var files = GetFiles(_rootDirInfo);
         foreach (var file in files) {
             switch (file.Extension) {
                 case ".vmt":
@@ -71,15 +76,21 @@ public class ContentProtector {
         }
 
         var vmt = new Vmt(fileInfo);
-        var vmtComments = new VmtComments(vmt);
 
-        if (RemoveExistingComments) {
-            vmtComments.RemoveAllComments();
+        if (AddNoToolTexture) {
+            var vmtNoToolTextureAdder = new VmtNoToolTextureAdder(vmt);
+            vmtNoToolTextureAdder.AddNoToolTexture();
         }
 
-        vmtComments.AddComment(Comment);
+        var vmtCommentsRemover = new VmtCommentsRemover(vmt);
+        if (RemoveExistingComments) {
+            vmtCommentsRemover.RemoveAllComments();
+        }
 
-        File.WriteAllBytes(fileInfo.FullName, vmt.GetBytes());
+        var vmtCommentsAdder = new VmtCommentsAdder(vmt);
+        vmtCommentsAdder.AddComment(Comment);
+
+        WriteFile(fileInfo, vmt.GetBytes());
     }
 
     private void ProtectVtf(FileSystemInfo fileInfo) {
@@ -92,6 +103,30 @@ public class ContentProtector {
 
         vtfComments.AddComment(Comment);
 
-        File.WriteAllBytes(fileInfo.FullName, vtf.GetBytes());
+        WriteFile(fileInfo, vtf.GetBytes());
+    }
+
+    private void WriteFile(FileSystemInfo fileInfo, byte[] bytes) {
+        // take the root directory and make a copy with an _copyright suffix next to it
+
+        var newDir = new DirectoryInfo(Path.Combine(_rootDirInfo.Parent!.FullName, _rootDirInfo.Name + "_protected"));
+
+        if (!Directory.Exists(newDir.FullName)) {
+            Directory.CreateDirectory(newDir.FullName);
+        }
+
+        // get the new file location (trim the prefix until the root directory)
+
+        var newFilePath = fileInfo.FullName.Replace(_rootDirInfo.FullName, newDir.FullName);
+
+        // create the directory if it doesn't exist
+
+        var newFileDir = new DirectoryInfo(Path.GetDirectoryName(newFilePath)!);
+
+        if (!Directory.Exists(newFileDir.FullName)) {
+            Directory.CreateDirectory(newFileDir.FullName);
+        }
+
+        File.WriteAllBytes(newFilePath, bytes);
     }
 }

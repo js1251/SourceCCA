@@ -42,9 +42,16 @@ public partial class MainWindow : Window, INotifyPropertyChanged {
         InitializeComponent();
 
         // TODO: read from settings
-        CopyRightMessage = "© 2023 Jakob Sailer";
+        CopyRightMessage = UiSettings.Default.Message;
         HideTextures = true;
         RemoveComments = true;
+
+        Closing += Save;
+    }
+
+    private void Save(object _, CancelEventArgs __) {
+        UiSettings.Default.Message = CopyRightMessage;
+        UiSettings.Default.Save();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

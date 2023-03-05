@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ui" GeneratedClassName="UiSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Message" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Your Copyright Message here</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

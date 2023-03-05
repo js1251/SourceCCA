@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ui"
         mc:Ignorable="d"
-        Title="SourceCCA"
+        Title="SourceCCA - Source Content Copyright Adder"
         Height="450" Width="800"
         x:Name="Root">
     <Grid>
@@ -36,11 +36,11 @@
 
             <CheckBox
                 Margin="0, 10, 0, 10"
-                Content="Remove Existing Comments from files"
+                Content="Remove Comments from files"
                 IsChecked="{Binding ElementName=Root, Path=RemoveComments, Mode=TwoWay}"/>
 
             <CheckBox
-                Content="Hide Textures in Hammer"
+                Content="Make Materials not show up in Hammer"
                 IsChecked="{Binding ElementName=Root, Path=HideTextures, Mode=TwoWay}"/>
         </StackPanel>
 
@@ -62,7 +62,7 @@
             Opacity="0.5">
             Drag and Drop folders here
             <LineBreak />
-            to protect its content
+            to add your copyright message to its content
         </TextBlock>
 
     </Grid>
